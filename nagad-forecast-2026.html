@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Nagad - Recruitment Forecast 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --red:#E8231A; --orange:#F5A623; --amber:#D97706;
+  --bg:#080808; --card:#111; --card2:#191919;
+  --border:#252525; --text:#F0F0F0; --muted:#666;
+  --green:#22C55E;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;}
+
+/* HEADER */
+header{
+  background:linear-gradient(120deg,#0a0000 0%,#1c0303 50%,#0a0000 100%);
+  border-bottom:1px solid #2a0a0a;
+  padding:18px 36px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:99;
+}
+.brand{display:flex;align-items:center;gap:14px;}
+.brand-ring{
+  height:46px;
+  width:auto;
+}
+.brand h1{font-size:1.25rem;font-weight:700;color:#fff;}
+.brand p{font-size:.72rem;color:var(--muted);margin-top:1px;}
+.nav{display:flex;gap:8px;}
+.nav-btn{
+  padding:6px 16px;border-radius:20px;font-size:.72rem;font-weight:600;
+  letter-spacing:.06em;text-transform:uppercase;cursor:pointer;border:none;
+  transition:all .2s;
+}
+.nav-btn.active{background:var(--red);color:#fff;}
+.nav-btn:not(.active){background:transparent;color:var(--muted);border:1px solid var(--border);}
+.nav-btn:not(.active):hover{border-color:var(--red);color:var(--red);}
+.badge{
+  background:rgba(232,35,26,.12);border:1px solid rgba(232,35,26,.35);
+  color:var(--red);font-size:.68rem;padding:4px 12px;border-radius:20px;
+  font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+}
+
+/* TABS */
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+main{padding:28px 36px;max-width:1420px;margin:0 auto;}
+
+/* SECTION HEADING */
+.sh{
+  font-size:.68rem;font-weight:700;color:var(--orange);
+  letter-spacing:.14em;text-transform:uppercase;
+  margin-bottom:16px;display:flex;align-items:center;gap:10px;
+}
+.sh::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* KPI STRIP */
+.kpi-row{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-bottom:28px;}
+.kpi{
+  background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:18px 16px;position:relative;overflow:hidden;
+  transition:border-color .2s,transform .2s;
+}
+.kpi:hover{border-color:rgba(232,35,26,.5);transform:translateY(-2px);}
+.kpi::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--red),var(--orange));
+}
+.kpi-val{font-size:1.8rem;font-weight:800;color:#fff;line-height:1;margin-bottom:3px;}
+.kpi-val sup{font-size:.9rem;color:var(--orange);}
+.kpi-lbl{font-size:.7rem;color:var(--muted);}
+.kpi-delta{font-size:.68rem;margin-top:4px;}
+.up{color:var(--green);}
+.dn{color:var(--red);}
+
+/* GRID */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;margin-bottom:18px;}
+.g1{margin-bottom:18px;}
+
+.card{
+  background:var(--card);border:1px solid var(--border);border-radius:12px;padding:22px;
+  transition:border-color .2s;
+}
+.card:hover{border-color:rgba(232,35,26,.25);}
+.ct{font-size:.84rem;font-weight:700;color:#fff;margin-bottom:3px;}
+.cs{font-size:.7rem;color:var(--muted);margin-bottom:18px;}
+.cw{position:relative;}
+
+/* ASSUMPTIONS TABLE */
+.asm-table{width:100%;border-collapse:collapse;font-size:.78rem;}
+.asm-table th{
+  text-align:left;padding:8px 12px;
+  background:#161616;color:var(--orange);
+  font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;
+  border-bottom:1px solid var(--border);
+}
+.asm-table td{padding:8px 12px;border-bottom:1px solid #1a1a1a;color:var(--text);}
+.asm-table tr:last-child td{border-bottom:none;}
+.asm-table td:first-child{color:var(--muted);}
+.pill{
+  display:inline-block;padding:2px 10px;border-radius:12px;
+  font-size:.67rem;font-weight:600;
+}
+.pill-red{background:rgba(232,35,26,.15);color:var(--red);}
+.pill-grn{background:rgba(34,197,94,.15);color:var(--green);}
+.pill-org{background:rgba(245,166,35,.15);color:var(--orange);}
+
+/* CAPACITY BARS */
+.cap-row{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.cap-yr{width:40px;font-size:.78rem;color:var(--muted);}
+.cap-bar-wrap{flex:1;background:#1a1a1a;border-radius:6px;height:26px;position:relative;overflow:hidden;}
+.cap-bar{height:100%;border-radius:6px;display:flex;align-items:center;padding-left:10px;
+  font-size:.72rem;font-weight:700;color:#fff;transition:width 1s ease;}
+.cap-meta{width:140px;font-size:.72rem;color:var(--muted);}
+
+/* TIMELINE */
+.tl{position:relative;padding-left:28px;}
+.tl::before{content:'';position:absolute;left:7px;top:0;bottom:0;width:2px;background:var(--border);}
+.tl-item{position:relative;margin-bottom:20px;}
+.tl-dot{
+  position:absolute;left:-24px;top:3px;
+  width:14px;height:14px;border-radius:50%;border:2px solid var(--red);
+  background:var(--bg);
+}
+.tl-item.done .tl-dot{background:var(--orange);border-color:var(--orange);}
+.tl-item.now .tl-dot{background:var(--red);border-color:var(--red);
+  box-shadow:0 0 10px rgba(232,35,26,.6);}
+.tl-yr{font-size:.68rem;color:var(--orange);font-weight:700;margin-bottom:3px;}
+.tl-title{font-size:.82rem;font-weight:700;color:#fff;margin-bottom:3px;}
+.tl-desc{font-size:.72rem;color:var(--muted);line-height:1.5;}
+
+footer{text-align:center;padding:22px;color:var(--muted);font-size:.7rem;
+  border-top:1px solid var(--border);margin-top:8px;}
+footer b{color:var(--red);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <img class="brand-ring" src="nagad-logo.png" alt="Nagad Logo">
+    <div>
+      <h1>Nagad Ltd. - Recruitment Forecast</h1>
+      <p>Historical 2022–2023 · Projection 2024–2026 · HR Analytics</p>
+    </div>
+  </div>
+  <div class="nav">
+    <button class="nav-btn active" onclick="switchTab('forecast')">Forecast</button>
+    <button class="nav-btn" onclick="switchTab('capacity')">Capacity</button>
+    <button class="nav-btn" onclick="switchTab('roadmap')">Roadmap</button>
+  </div>
+  <div class="badge">2026 Outlook</div>
+</header>
+
+<main>
+
+<!-- ══ TAB 1: FORECAST ══════════════════════════════════════════════════════ -->
+<div id="tab-forecast" class="tab-panel active">
+
+  <div class="sh">2026 Forecast KPIs</div>
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="kpi-val">331</div>
+      <div class="kpi-lbl">Projected Hires 2026</div>
+      <div class="kpi-delta up">↑ +72% vs 2023 baseline</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val">14,800<sup>+</sup></div>
+      <div class="kpi-lbl">Est. Applications 2026</div>
+      <div class="kpi-delta up">↑ 3× volume growth</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val">≤45</div>
+      <div class="kpi-lbl">Target Days to Hire</div>
+      <div class="kpi-delta dn">Currently 64.5 days</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val">20<sup>%</sup></div>
+      <div class="kpi-lbl">Annual Growth Rate</div>
+      <div class="kpi-delta up">Fintech BD benchmark</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val">6</div>
+      <div class="kpi-lbl">TA Staff Needed</div>
+      <div class="kpi-delta dn">Currently 3 - gap: +3</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val">38<sup>%</sup></div>
+      <div class="kpi-lbl">LinkedIn Share (2026)</div>
+      <div class="kpi-delta up">↑ from 28% in 2023</div>
+    </div>
+  </div>
+
+  <!-- Monthly forecast chart -->
+  <div class="g1">
+    <div class="card">
+      <div class="ct">Monthly Hiring - Actuals (2022–2023) vs Forecast (2024–2026)</div>
+      <div class="cs">Orange = actuals · Red dashed = forecast · Shaded band = ±15% confidence interval</div>
+      <div class="cw" style="height:300px"><canvas id="monthlyForecast"></canvas></div>
+    </div>
+  </div>
+
+  <div class="g2">
+    <!-- Annual bar -->
+    <div class="card">
+      <div class="ct">Annual Hires - Actuals vs Forecast</div>
+      <div class="cs">20% YoY growth assumption from 2023 annualized baseline</div>
+      <div class="cw" style="height:250px"><canvas id="annualBar"></canvas></div>
+    </div>
+
+    <!-- TTF forecast -->
+    <div class="card">
+      <div class="ct">Time-to-Fill Forecast vs 45-Day Target</div>
+      <div class="cs">Process improvements reduce TTF by ~3 days/year with ATS adoption</div>
+      <div class="cw" style="height:250px"><canvas id="ttfChart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="g2">
+    <!-- Source mix shift -->
+    <div class="card">
+      <div class="ct">Source Channel Mix: 2023 vs 2026</div>
+      <div class="cs">LinkedIn grows +10pp · bdjobs.com declines · Referrals formalised</div>
+      <div class="cw" style="height:250px"><canvas id="sourceMix"></canvas></div>
+    </div>
+
+    <!-- Dept forecast -->
+    <div class="card">
+      <div class="ct">Department Hiring Forecast - 2026</div>
+      <div class="cs">Technology & Product fastest growing · Operations remains largest</div>
+      <div class="cw" style="height:250px"><canvas id="deptForecast"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Assumptions -->
+  <div class="card">
+    <div class="ct">Model Assumptions & Methodology</div>
+    <div class="cs">All projections are based on 2022–2023 actuals + industry benchmarks for Bangladesh fintech</div>
+    <table class="asm-table">
+      <tr><th>Parameter</th><th>Value</th><th>Source / Rationale</th><th>Risk</th></tr>
+      <tr><td>Annual hiring growth</td><td>20%</td><td>Bangladesh fintech sector CAGR (2020–2023)</td><td><span class="pill pill-org">Medium</span></td></tr>
+      <tr><td>Attrition rate</td><td>12%</td><td>Industry benchmark for MFS companies in Bangladesh</td><td><span class="pill pill-grn">Low</span></td></tr>
+      <tr><td>TA capacity per staff</td><td>22 reqs/year</td><td>Nagad intern report: 3 staff manage ~65 reqs/year</td><td><span class="pill pill-grn">Low</span></td></tr>
+      <tr><td>TTF improvement</td><td>–3 days/year</td><td>Assumes ATS adoption by 2024; process standardisation</td><td><span class="pill pill-red">High</span></td></tr>
+      <tr><td>LinkedIn share growth</td><td>+10pp by 2026</td><td>Regional LinkedIn usage trend in BD professional market</td><td><span class="pill pill-org">Medium</span></td></tr>
+      <tr><td>Seasonality</td><td>2022 monthly index</td><td>Sep–Oct peak; Nov trough; applied to all forecast years</td><td><span class="pill pill-grn">Low</span></td></tr>
+      <tr><td>Forecast method</td><td>Linear regression + seasonal decomposition</td><td>Sklearn LinearRegression on monthly t-index + seasonal multiplier</td><td><span class="pill pill-org">Medium</span></td></tr>
+    </table>
+  </div>
+
+</div><!-- /tab-forecast -->
+
+<!-- ══ TAB 2: CAPACITY ══════════════════════════════════════════════════════ -->
+<div id="tab-capacity" class="tab-panel">
+
+  <div class="sh">TA Team Capacity Planning</div>
+  <div class="kpi-row" style="grid-template-columns:repeat(4,1fr)">
+    <div class="kpi">
+      <div class="kpi-val">3</div>
+      <div class="kpi-lbl">Current TA Staff (2023)</div>
+      <div class="kpi-delta dn">Critically understaffed by 2025</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val">4</div>
+      <div class="kpi-lbl">Required in 2024</div>
+      <div class="kpi-delta up">+1 hire needed now</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val">5</div>
+      <div class="kpi-lbl">Required in 2025</div>
+      <div class="kpi-delta dn">+2 from current</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val">6</div>
+      <div class="kpi-lbl">Required in 2026</div>
+      <div class="kpi-delta dn">+3 from current - double the team</div>
+    </div>
+  </div>
+
+  <div class="g1">
+    <div class="card">
+      <div class="ct">Requisition Volume vs TA Team Capacity</div>
+      <div class="cs">Red area = capacity gap · Each TA handles ~22 reqs/year at quality standard</div>
+      <div class="cw" style="height:280px"><canvas id="capChart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="ct">Annual Requisitions Forecast</div>
+      <div class="cs">Workload per TA staff member grows 73% by 2026 without hiring</div>
+      <br>
+      <div id="capBars"></div>
+    </div>
+
+    <div class="card">
+      <div class="ct">Capacity Gap - Required vs Current Hiring</div>
+      <div class="cs">What happens if Nagad doesn't expand the TA team?</div>
+      <br>
+      <table class="asm-table">
+        <tr><th>Year</th><th>Reqs</th><th>Current (3 TA)</th><th>Gap</th><th>Impact</th></tr>
+        <tr><td>2022</td><td>65</td><td>✓ Manageable</td><td>0</td><td><span class="pill pill-grn">OK</span></td></tr>
+        <tr><td>2023</td><td>65</td><td>✓ Manageable</td><td>0</td><td><span class="pill pill-grn">OK</span></td></tr>
+        <tr><td>2024</td><td>78</td><td>⚠ Stretched</td><td>+1 needed</td><td><span class="pill pill-org">Warn</span></td></tr>
+        <tr><td>2025</td><td>93</td><td>✗ Overloaded</td><td>+2 needed</td><td><span class="pill pill-red">Risk</span></td></tr>
+        <tr><td>2026</td><td>112</td><td>✗ Critical</td><td>+3 needed</td><td><span class="pill pill-red">Critical</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /tab-capacity -->
+
+<!-- ══ TAB 3: ROADMAP ═══════════════════════════════════════════════════════ -->
+<div id="tab-roadmap" class="tab-panel">
+
+  <div class="sh">Recruitment Transformation Roadmap 2024–2026</div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="ct">Strategic Initiatives Timeline</div>
+      <div class="cs">Recommended actions to achieve ≤45 day TTF and support 20% hire growth</div>
+      <br>
+      <div class="tl">
+        <div class="tl-item done">
+          <div class="tl-dot"></div>
+          <div class="tl-yr">2022–2023 · Baseline</div>
+          <div class="tl-title">Process Documented</div>
+          <div class="tl-desc">10-step process established · bdjobs.com + LinkedIn as primary channels · 3-person TA team managing 65 reqs/year</div>
+        </div>
+        <div class="tl-item now">
+          <div class="tl-dot"></div>
+          <div class="tl-yr">2024 · Immediate Priority</div>
+          <div class="tl-title">ATS Implementation + 1 TA Hire</div>
+          <div class="tl-desc">Introduce applicant tracking system to automate CV screening (currently manual, 75% rejection rate) · Hire 1 additional TA specialist · Formalise internal referral programme with incentives</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-yr">2025 · Process Maturity</div>
+          <div class="tl-title">Structured Interview Scheduling + Data Dashboard</div>
+          <div class="tl-desc">Pre-schedule monthly executive interview panels to reduce executive TTF · Deploy live recruitment dashboard (Power BI) for TA team · Add 1 more TA specialist · Target TTF: ≤55 days</div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-dot"></div>
+          <div class="tl-yr">2026 · Scale</div>
+          <div class="tl-title">Predictive Hiring + Full-Scale TA Team</div>
+          <div class="tl-desc">Use forecast model to anticipate hiring needs 90 days in advance · TA team: 6 staff · LinkedIn Recruiter licences for all TA · Target TTF: ≤45 days · Onboarding SLA: ≤10 days</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="ct">Projected Impact of Initiatives</div>
+      <div class="cs">Forecast with vs without transformation investment</div>
+      <div class="cw" style="height:220px"><canvas id="impactChart"></canvas></div>
+      <br>
+      <table class="asm-table">
+        <tr><th>Metric</th><th>2023 Actual</th><th>2026 Base</th><th>2026 Optimised</th></tr>
+        <tr><td>Avg TTF (days)</td><td>64.5</td><td>68</td><td class="up">44</td></tr>
+        <tr><td>Offer accept rate</td><td>75%</td><td>72%</td><td class="up">82%</td></tr>
+        <tr><td>Candidate dropout</td><td>8–14%</td><td>15%</td><td class="up">5%</td></tr>
+        <tr><td>CV screen time/req</td><td>Manual, 3–10d</td><td>Manual</td><td class="up">ATS, 1d</td></tr>
+        <tr><td>Referral hire rate</td><td>5.0%</td><td>5.0%</td><td class="up">9%</td></tr>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /tab-roadmap -->
+
+</main>
+
+<footer>Built by <b>A H Ashik Ahmed</b> · Nagad Ltd. Recruitment Analytics · Python · SQL · scikit-learn · Chart.js</footer>
+
+<script>
+// ── COLOUR SCHEME ────────────────────────────────────────────────────────────
+const RED='#E8231A', ORG='#F5A623', GRN='#22C55E', GRY='#444';
+const BG='#0A0A0A', CARD='#141414';
+
+Chart.defaults.color='#666';
+Chart.defaults.borderColor='#222';
+Chart.defaults.font.family="'Segoe UI',system-ui,sans-serif";
+const TTP={backgroundColor:'#1a1a1a',borderColor:'#333',borderWidth:1,
+           titleColor:'#fff',bodyColor:'#ccc',padding:10};
+const GRID={color:'#1e1e1e',drawBorder:false};
+
+// ── DATA ─────────────────────────────────────────────────────────────────────
+// Actuals (2022 full year + 2023 Jan-Nov)
+const actMonths=['Jan-22','Feb-22','Mar-22','Apr-22','May-22','Jun-22','Jul-22',
+                 'Aug-22','Sep-22','Oct-22','Nov-22','Dec-22',
+                 'Jan-23','Feb-23','Mar-23','Apr-23','May-23','Jun-23',
+                 'Jul-23','Aug-23','Sep-23','Oct-23','Nov-23'];
+const actHires=[13,31,9,24,15,24,23,35,42,42,6,39,34,14,19,17,9,28,18,8,14,9,6];
+
+// 2022 seasonal index (monthly / avg 25.25)
+const sea=[0.515,1.228,0.356,0.950,0.594,0.950,0.911,1.386,1.663,1.663,0.238,1.545];
+
+// Forecasted annual hires: base=192 (2023 ann.), +20%/yr
+const annBase=[303,192,230,276,331];
+function monthlyFc(annual,seaIdx){return seaIdx.map(s=>Math.round(annual/12*s));}
+const fc2024=monthlyFc(230,sea); const fc2025=monthlyFc(276,sea); const fc2026=monthlyFc(331,sea);
+const fcAll=[...fc2024,...fc2025,...fc2026];
+const fcLo=fcAll.map(v=>Math.round(v*0.85)); const fcHi=fcAll.map(v=>Math.round(v*1.15));
+const fcMonths=['Jan-24','Feb-24','Mar-24','Apr-24','May-24','Jun-24','Jul-24','Aug-24',
+                'Sep-24','Oct-24','Nov-24','Dec-24','Jan-25','Feb-25','Mar-25','Apr-25',
+                'May-25','Jun-25','Jul-25','Aug-25','Sep-25','Oct-25','Nov-25','Dec-25',
+                'Jan-26','Feb-26','Mar-26','Apr-26','May-26','Jun-26','Jul-26','Aug-26',
+                'Sep-26','Oct-26','Nov-26','Dec-26'];
+
+// ── CHART 1: Monthly Forecast ────────────────────────────────────────────────
+const allLabels=[...actMonths,...fcMonths];
+const actData=[...actHires,...Array(36).fill(null)];
+const fcData=[...Array(23).fill(null),...fcAll];
+const fcLoData=[...Array(23).fill(null),...fcLo];
+const fcHiData=[...Array(23).fill(null),...fcHi];
+
+new Chart(document.getElementById('monthlyForecast'),{
+  type:'line',
+  data:{labels:allLabels,datasets:[
+    {label:'Actuals',data:actData,borderColor:ORG,backgroundColor:'rgba(245,166,35,0.06)',
+     borderWidth:2.5,pointRadius:3,fill:true,spanGaps:false},
+    {label:'Forecast',data:fcData,borderColor:RED,backgroundColor:'transparent',
+     borderWidth:2.5,borderDash:[6,4],pointRadius:3,spanGaps:false},
+    {label:'+15%',data:fcHiData,borderColor:'transparent',
+     backgroundColor:'rgba(232,35,26,0.08)',fill:'+1',pointRadius:0,spanGaps:false},
+    {label:'–15%',data:fcLoData,borderColor:'transparent',
+     backgroundColor:'rgba(232,35,26,0.08)',fill:false,pointRadius:0,spanGaps:false},
+  ]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{labels:{boxWidth:12,font:{size:10}}},tooltip:TTP},
+    scales:{x:{grid:GRID,ticks:{font:{size:8},maxRotation:45,
+      color:(ctx)=>ctx.index<23?'#888':RED}},
+      y:{grid:GRID,ticks:{font:{size:10}}}}}
+});
+
+// ── CHART 2: Annual Bar ──────────────────────────────────────────────────────
+new Chart(document.getElementById('annualBar'),{
+  type:'bar',
+  data:{labels:['2022','2023','2024F','2025F','2026F'],
+    datasets:[{data:annBase,
+      backgroundColor:['rgba(245,166,35,.8)','rgba(245,166,35,.6)',
+                        'rgba(232,35,26,.5)','rgba(232,35,26,.7)','rgba(232,35,26,.9)'],
+      borderRadius:7,borderSkipped:false}]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{...TTP,callbacks:{label:ctx=>` ${ctx.raw} hires`}},
+      datalabels:{display:false}},
+    scales:{x:{grid:GRID},y:{grid:GRID}}}
+});
+
+// ── CHART 3: TTF ─────────────────────────────────────────────────────────────
+const ttfLabels=['2022','2023','2024','2025','2026'];
+const ttfAct=[64.5,64.5,null,null,null];
+const ttfFc=[null,64.5,61,55,44];
+new Chart(document.getElementById('ttfChart'),{
+  type:'line',
+  data:{labels:ttfLabels,datasets:[
+    {label:'Actual TTF',data:ttfAct,borderColor:ORG,borderWidth:2.5,
+     pointRadius:5,pointBackgroundColor:ORG,spanGaps:false},
+    {label:'Forecast TTF',data:ttfFc,borderColor:RED,borderDash:[6,3],
+     borderWidth:2.5,pointRadius:5,pointBackgroundColor:RED,spanGaps:false},
+    {label:'45-day Target',data:[45,45,45,45,45],borderColor:'#333',
+     borderDash:[3,3],borderWidth:1,pointRadius:0},
+  ]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{labels:{boxWidth:12,font:{size:10}}},tooltip:TTP},
+    scales:{x:{grid:GRID},y:{grid:GRID,min:30,max:80,
+      ticks:{callback:v=>v+'d'}}}}
+});
+
+// ── CHART 4: Source Mix Doughnut ─────────────────────────────────────────────
+const smCtx=document.getElementById('sourceMix');
+const smColors=[RED,ORG,'#D97706','#6B7280','#374151'];
+new Chart(smCtx,{
+  type:'doughnut',
+  data:{labels:['bdjobs.com (32%)','LinkedIn (38%)','Referral (20%)','Walk-in (5%)','Headhunting (5%)'],
+    datasets:[
+      {label:'2023',data:[40,28,18,8,6],backgroundColor:smColors.map(c=>c+'80'),
+       borderWidth:2,borderColor:BG,hoverOffset:6},
+      {label:'2026',data:[32,38,20,5,5],backgroundColor:smColors,
+       borderWidth:2,borderColor:BG,hoverOffset:6},
+    ]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{position:'right',labels:{boxWidth:12,font:{size:9},color:'#aaa'}},
+      tooltip:{...TTP,callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw}%`}}}}
+});
+
+// ── CHART 5: Dept Forecast ───────────────────────────────────────────────────
+new Chart(document.getElementById('deptForecast'),{
+  type:'bar',
+  data:{
+    labels:['Operations','Technology','Product','Marketing','Customer Svc','Agent Banking','Finance','HR','Legal'],
+    datasets:[
+      {label:'2023',data:[62,46,23,43,37,37,46,16,7],backgroundColor:'rgba(245,166,35,.4)',borderRadius:4},
+      {label:'2026',data:[91,77,43,58,52,51,61,20,9],backgroundColor:'rgba(232,35,26,.75)',borderRadius:4},
+    ]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{labels:{boxWidth:10,font:{size:9}}},tooltip:TTP},
+    scales:{x:{grid:GRID,ticks:{font:{size:8},maxRotation:30}},y:{grid:GRID}}}
+});
+
+// ── CAPACITY CHART ───────────────────────────────────────────────────────────
+new Chart(document.getElementById('capChart'),{
+  type:'bar',
+  data:{labels:['2022','2023','2024','2025','2026'],
+    datasets:[
+      {label:'Requisitions',data:[65,65,78,93,112],backgroundColor:'rgba(245,166,35,.35)',
+       borderColor:ORG,borderWidth:1.5,borderRadius:6},
+      {label:'TA Capacity (3 staff)',data:[66,66,66,66,66],
+       type:'line',borderColor:'#555',borderDash:[5,3],borderWidth:2,
+       pointRadius:0,fill:false},
+      {label:'Required Capacity',data:[66,66,88,110,132],
+       type:'line',borderColor:RED,borderWidth:2.5,
+       pointBackgroundColor:RED,pointRadius:5,fill:false},
+    ]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{labels:{boxWidth:12,font:{size:10}}},tooltip:TTP},
+    scales:{x:{grid:GRID},y:{grid:GRID,min:0,max:150}}}
+});
+
+// ── CAPACITY BARS ────────────────────────────────────────────────────────────
+const capData=[
+  {yr:'2022',reqs:65, ta:3,needed:3,pct:100},
+  {yr:'2023',reqs:65, ta:3,needed:3,pct:100},
+  {yr:'2024',reqs:78, ta:3,needed:4,pct:75},
+  {yr:'2025',reqs:93, ta:3,needed:5,pct:60},
+  {yr:'2026',reqs:112,ta:3,needed:6,pct:50},
+];
+const cbEl=document.getElementById('capBars');
+capData.forEach(d=>{
+  const col=d.pct>=100?GRN:d.pct>=75?ORG:RED;
+  cbEl.innerHTML+=`<div class="cap-row">
+    <div class="cap-yr">${d.yr}</div>
+    <div class="cap-bar-wrap">
+      <div class="cap-bar" style="width:${d.pct}%;background:${col}aa">
+        ${d.reqs} reqs
+      </div>
+    </div>
+    <div class="cap-meta" style="color:${col}">${d.ta} staff / ${d.needed} needed</div>
+  </div>`;
+});
+
+// ── IMPACT CHART ─────────────────────────────────────────────────────────────
+new Chart(document.getElementById('impactChart'),{
+  type:'bar',
+  data:{labels:['Avg TTF (days)','Offer Accept %','Candidate Dropout %','Referral Hire Rate %'],
+    datasets:[
+      {label:'2023 Actual',data:[64.5,75,11,5.0],backgroundColor:'rgba(245,166,35,.5)',borderRadius:5},
+      {label:'2026 No Action',data:[68,72,15,5.0],backgroundColor:'rgba(232,35,26,.4)',borderRadius:5},
+      {label:'2026 Optimised',data:[44,82,5,9.0],backgroundColor:'rgba(34,197,94,.6)',borderRadius:5},
+    ]},
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{labels:{boxWidth:10,font:{size:9}}},tooltip:TTP},
+    scales:{x:{grid:GRID,ticks:{font:{size:9}}},y:{grid:GRID}}}
+});
+
+// ── TAB SWITCHER ─────────────────────────────────────────────────────────────
+function switchTab(id){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>

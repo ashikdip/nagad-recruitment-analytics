@@ -1,0 +1,131 @@
+req_id,job_title,department,level,hire_type,open_date,approved_date,target_hires
+REQ0001,Process Analyst,Operations,Non-Executive,Permanent,2022-08-24,2022-08-30,1
+REQ0002,Area Manager - Agent Banking,Agent Banking,Non-Executive,Permanent,2023-07-06,2023-07-10,3
+REQ0003,Process Analyst,Operations,Non-Executive,Permanent,2023-01-18,2023-01-27,2
+REQ0004,Field Coordinator,Operations,Non-Executive,Permanent,2022-03-26,2022-03-30,1
+REQ0005,Accounts Officer,Finance,Non-Executive,Contractual,2023-01-07,2023-01-11,1
+REQ0006,Call Centre Agent,Customer Service,Executive,Permanent,2022-05-13,2022-05-19,3
+REQ0007,Agent Network Executive,Agent Banking,Non-Executive,Permanent,2023-05-31,2023-06-05,1
+REQ0008,Operations Executive,Operations,Executive,Permanent,2023-03-12,2023-03-16,1
+REQ0009,Operations Manager,Operations,Non-Executive,Permanent,2022-07-25,2022-07-28,2
+REQ0010,Process Analyst,Operations,Executive,Permanent,2022-12-29,2023-01-08,3
+REQ0011,Product Manager,Product,Non-Executive,Permanent,2023-09-15,2023-09-24,1
+REQ0012,Marketing Manager,Marketing,Executive,Permanent,2022-05-30,2022-06-05,2
+REQ0013,Field Coordinator,Operations,Non-Executive,Permanent,2022-05-01,2022-05-09,1
+REQ0014,Digital Marketing Executive,Marketing,Non-Executive,Permanent,2022-12-12,2022-12-18,1
+REQ0015,Agent Relationship Officer,Agent Banking,Non-Executive,Permanent,2023-07-02,2023-07-06,1
+REQ0016,Marketing Manager,Marketing,Executive,Permanent,2022-08-24,2022-08-31,2
+REQ0017,Area Manager - Agent Banking,Agent Banking,Non-Executive,Permanent,2022-11-18,2022-11-24,2
+REQ0018,Agent Relationship Officer,Agent Banking,Non-Executive,Contractual,2022-03-24,2022-04-03,1
+REQ0019,Tech Lead,Technology,Non-Executive,Contractual,2022-11-25,2022-12-05,1
+REQ0020,Finance Manager,Finance,Executive,Permanent,2023-09-18,2023-09-23,1
+REQ0021,CS Manager,Customer Service,Executive,Permanent,2022-07-19,2022-07-28,1
+REQ0022,DevOps Engineer,Technology,Non-Executive,Permanent,2022-07-17,2022-07-22,2
+REQ0023,Process Analyst,Operations,Executive,Permanent,2023-02-23,2023-03-03,2
+REQ0024,Field Coordinator,Operations,Non-Executive,Permanent,2022-06-21,2022-07-01,3
+REQ0025,UX Designer,Product,Non-Executive,Contractual,2022-07-25,2022-07-28,3
+REQ0026,Software Engineer,Technology,Non-Executive,Permanent,2023-03-03,2023-03-10,1
+REQ0027,HR Business Partner,HR,Non-Executive,Contractual,2022-07-18,2022-07-22,3
+REQ0028,Operations Manager,Operations,Non-Executive,Contractual,2022-12-03,2022-12-08,2
+REQ0029,Business Analyst,Product,Executive,Permanent,2023-03-05,2023-03-10,1
+REQ0030,Operations Manager,Operations,Executive,Permanent,2022-07-08,2022-07-18,1
+REQ0031,Product Analyst,Product,Executive,Permanent,2023-06-29,2023-07-05,3
+REQ0032,Software Engineer,Technology,Executive,Permanent,2022-12-10,2022-12-13,1
+REQ0033,CS Manager,Customer Service,Non-Executive,Contractual,2022-09-25,2022-09-30,1
+REQ0034,Process Analyst,Operations,Non-Executive,Permanent,2023-07-23,2023-07-30,1
+REQ0035,CS Team Lead,Customer Service,Non-Executive,Permanent,2022-04-30,2022-05-10,1
+REQ0036,Brand Executive,Marketing,Non-Executive,Permanent,2023-07-27,2023-08-01,2
+REQ0037,Area Manager - Agent Banking,Agent Banking,Non-Executive,Permanent,2022-04-27,2022-05-02,2
+REQ0038,Tech Lead,Technology,Executive,Contractual,2023-01-24,2023-01-29,1
+REQ0039,Accounts Officer,Finance,Non-Executive,Contractual,2022-12-15,2022-12-18,2
+REQ0040,Operations Executive,Operations,Non-Executive,Permanent,2022-05-31,2022-06-10,2
+REQ0041,HR Executive,HR,Non-Executive,Permanent,2022-08-30,2022-09-09,2
+REQ0042,Product Manager,Product,Executive,Permanent,2022-06-20,2022-06-30,1
+REQ0043,DevOps Engineer,Technology,Non-Executive,Contractual,2022-06-12,2022-06-17,3
+REQ0044,Agent Network Executive,Agent Banking,Non-Executive,Permanent,2023-05-20,2023-05-29,2
+REQ0045,DevOps Engineer,Technology,Executive,Permanent,2022-12-01,2022-12-04,1
+REQ0046,Financial Analyst,Finance,Non-Executive,Permanent,2022-10-23,2022-11-01,1
+REQ0047,Agent Relationship Officer,Agent Banking,Non-Executive,Permanent,2022-02-25,2022-03-03,1
+REQ0048,Agent Network Executive,Agent Banking,Non-Executive,Permanent,2023-08-03,2023-08-06,2
+REQ0049,HR Executive,HR,Non-Executive,Permanent,2022-09-18,2022-09-23,1
+REQ0050,System Administrator,Technology,Non-Executive,Permanent,2023-02-10,2023-02-20,1
+REQ0051,Digital Marketing Executive,Marketing,Non-Executive,Permanent,2023-01-14,2023-01-19,1
+REQ0052,Finance Manager,Finance,Executive,Permanent,2023-09-19,2023-09-25,3
+REQ0053,Process Analyst,Operations,Executive,Permanent,2022-09-20,2022-09-25,2
+REQ0054,Operations Executive,Operations,Executive,Permanent,2022-08-29,2022-09-04,1
+REQ0055,Operations Executive,Operations,Non-Executive,Permanent,2022-09-05,2022-09-12,1
+REQ0056,Operations Executive,Operations,Non-Executive,Permanent,2022-02-09,2022-02-18,1
+REQ0057,DevOps Engineer,Technology,Non-Executive,Permanent,2022-09-19,2022-09-22,1
+REQ0058,Agent Relationship Officer,Agent Banking,Non-Executive,Permanent,2023-02-03,2023-02-08,2
+REQ0059,Software Engineer,Technology,Non-Executive,Permanent,2022-12-30,2023-01-05,1
+REQ0060,UX Designer,Product,Non-Executive,Contractual,2023-01-20,2023-01-26,1
+REQ0061,QA Engineer,Technology,Non-Executive,Permanent,2022-12-18,2022-12-25,2
+REQ0062,Data Analyst,Technology,Non-Executive,Permanent,2022-03-24,2022-04-01,1
+REQ0063,Content Writer,Marketing,Non-Executive,Permanent,2022-12-01,2022-12-09,2
+REQ0064,Accounts Officer,Finance,Executive,Permanent,2022-10-01,2022-10-09,2
+REQ0065,Brand Executive,Marketing,Non-Executive,Permanent,2023-03-29,2023-04-08,1
+REQ0066,Financial Analyst,Finance,Executive,Contractual,2022-01-19,2022-01-26,1
+REQ0067,Agent Relationship Officer,Agent Banking,Non-Executive,Permanent,2023-06-06,2023-06-12,2
+REQ0068,UX Designer,Product,Non-Executive,Contractual,2023-02-12,2023-02-18,1
+REQ0069,Operations Executive,Operations,Non-Executive,Permanent,2022-01-21,2022-01-24,1
+REQ0070,Product Analyst,Product,Non-Executive,Permanent,2022-01-21,2022-01-25,2
+REQ0071,Customer Service Executive,Customer Service,Executive,Permanent,2023-03-17,2023-03-24,1
+REQ0072,Agent Network Executive,Agent Banking,Non-Executive,Permanent,2023-03-02,2023-03-06,1
+REQ0073,Operations Executive,Operations,Non-Executive,Contractual,2022-10-03,2022-10-10,1
+REQ0074,Software Engineer,Technology,Non-Executive,Permanent,2022-02-05,2022-02-09,1
+REQ0075,Product Manager,Product,Non-Executive,Permanent,2023-05-29,2023-06-05,2
+REQ0076,Treasury Analyst,Finance,Non-Executive,Permanent,2022-06-02,2022-06-08,1
+REQ0077,Operations Executive,Operations,Non-Executive,Permanent,2022-08-21,2022-08-30,2
+REQ0078,Marketing Manager,Marketing,Executive,Permanent,2023-08-18,2023-08-22,1
+REQ0079,Process Analyst,Operations,Non-Executive,Permanent,2022-04-01,2022-04-07,1
+REQ0080,Agent Network Executive,Agent Banking,Executive,Permanent,2023-07-23,2023-07-29,1
+REQ0081,DevOps Engineer,Technology,Executive,Permanent,2023-02-19,2023-02-27,1
+REQ0082,HR Business Partner,HR,Non-Executive,Permanent,2022-08-12,2022-08-20,1
+REQ0083,CS Team Lead,Customer Service,Non-Executive,Contractual,2022-08-02,2022-08-11,2
+REQ0084,Call Centre Agent,Customer Service,Non-Executive,Permanent,2022-01-22,2022-01-25,2
+REQ0085,System Administrator,Technology,Non-Executive,Permanent,2022-11-24,2022-12-01,2
+REQ0086,Digital Marketing Executive,Marketing,Executive,Contractual,2023-07-17,2023-07-24,1
+REQ0087,Operations Executive,Operations,Non-Executive,Permanent,2022-06-29,2022-07-03,1
+REQ0088,Operations Manager,Operations,Non-Executive,Contractual,2022-09-23,2022-09-27,3
+REQ0089,Digital Marketing Executive,Marketing,Non-Executive,Permanent,2022-01-05,2022-01-13,1
+REQ0090,Call Centre Agent,Customer Service,Non-Executive,Permanent,2022-10-10,2022-10-19,2
+REQ0091,UX Designer,Product,Executive,Permanent,2022-01-28,2022-02-04,1
+REQ0092,Operations Manager,Operations,Non-Executive,Permanent,2023-01-29,2023-02-02,2
+REQ0093,Product Analyst,Product,Non-Executive,Permanent,2023-05-27,2023-06-03,1
+REQ0094,Software Engineer,Technology,Non-Executive,Contractual,2022-12-30,2023-01-04,3
+REQ0095,Digital Marketing Executive,Marketing,Executive,Contractual,2022-03-08,2022-03-11,2
+REQ0096,HR Manager,HR,Non-Executive,Permanent,2023-05-24,2023-05-27,1
+REQ0097,Finance Manager,Finance,Executive,Contractual,2022-07-08,2022-07-13,3
+REQ0098,Operations Executive,Operations,Non-Executive,Permanent,2022-02-03,2022-02-10,1
+REQ0099,Treasury Analyst,Finance,Non-Executive,Permanent,2023-05-26,2023-05-31,1
+REQ0100,Product Analyst,Product,Executive,Permanent,2022-12-04,2022-12-12,1
+REQ0101,Process Analyst,Operations,Executive,Permanent,2023-06-09,2023-06-16,1
+REQ0102,Call Centre Agent,Customer Service,Executive,Permanent,2023-09-13,2023-09-20,1
+REQ0103,Agent Relationship Officer,Agent Banking,Non-Executive,Contractual,2022-08-26,2022-08-31,3
+REQ0104,Area Manager - Agent Banking,Agent Banking,Non-Executive,Permanent,2022-08-16,2022-08-23,1
+REQ0105,Field Coordinator,Operations,Executive,Permanent,2022-06-19,2022-06-22,1
+REQ0106,Treasury Analyst,Finance,Executive,Permanent,2023-10-09,2023-10-14,1
+REQ0107,CS Team Lead,Customer Service,Non-Executive,Contractual,2023-04-24,2023-04-30,1
+REQ0108,Operations Manager,Operations,Non-Executive,Permanent,2023-06-29,2023-07-07,1
+REQ0109,Tech Lead,Technology,Non-Executive,Permanent,2022-09-11,2022-09-20,1
+REQ0110,Field Coordinator,Operations,Executive,Permanent,2022-03-24,2022-03-29,1
+REQ0111,Call Centre Agent,Customer Service,Non-Executive,Contractual,2023-03-25,2023-04-02,1
+REQ0112,CS Manager,Customer Service,Executive,Contractual,2023-09-03,2023-09-12,1
+REQ0113,Data Analyst,Technology,Executive,Permanent,2023-08-06,2023-08-14,2
+REQ0114,Process Analyst,Operations,Non-Executive,Permanent,2023-04-11,2023-04-21,1
+REQ0115,Operations Executive,Operations,Non-Executive,Contractual,2023-05-11,2023-05-14,3
+REQ0116,Operations Manager,Operations,Non-Executive,Contractual,2022-01-12,2022-01-21,1
+REQ0117,Agent Network Executive,Agent Banking,Executive,Contractual,2022-05-05,2022-05-14,3
+REQ0118,Compliance Officer,Legal & Compliance,Non-Executive,Permanent,2023-08-26,2023-09-01,1
+REQ0119,Area Manager - Agent Banking,Agent Banking,Non-Executive,Permanent,2022-03-03,2022-03-06,2
+REQ0120,Accounts Officer,Finance,Non-Executive,Permanent,2022-08-07,2022-08-10,1
+REQ0121,Content Writer,Marketing,Non-Executive,Permanent,2022-09-07,2022-09-14,1
+REQ0122,QA Engineer,Technology,Executive,Contractual,2023-02-14,2023-02-21,2
+REQ0123,Marketing Manager,Marketing,Executive,Permanent,2022-12-09,2022-12-16,2
+REQ0124,Field Coordinator,Operations,Non-Executive,Contractual,2023-07-03,2023-07-07,1
+REQ0125,DevOps Engineer,Technology,Non-Executive,Permanent,2022-01-04,2022-01-09,1
+REQ0126,Content Writer,Marketing,Non-Executive,Contractual,2022-09-29,2022-10-08,1
+REQ0127,Customer Service Executive,Customer Service,Executive,Permanent,2022-03-31,2022-04-10,1
+REQ0128,Treasury Analyst,Finance,Non-Executive,Permanent,2022-08-15,2022-08-21,1
+REQ0129,Accounts Officer,Finance,Non-Executive,Permanent,2023-10-29,2023-11-01,2
+REQ0130,Brand Executive,Marketing,Non-Executive,Permanent,2022-06-23,2022-06-26,2
