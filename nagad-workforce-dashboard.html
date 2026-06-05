@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nagad HR Workforce Analytics | Power BI Style Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #F0F2F5;
+    --surface:   #FFFFFF;
+    --sidebar:   #1A2B4A;
+    --accent:    #2463EB;
+    --accent2:   #10B981;
+    --accent3:   #F59E0B;
+    --accent4:   #EF4444;
+    --text:      #111827;
+    --muted:     #6B7280;
+    --border:    #E5E7EB;
+    --header-h:  56px;
+    --side-w:    220px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    position: fixed; top: 0; left: 0; width: var(--side-w); height: 100vh;
+    background: var(--sidebar); display: flex; flex-direction: column;
+    z-index: 100; overflow: hidden;
+  }
+  .sidebar-logo {
+    padding: 20px 18px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .sidebar-logo .brand { font-size: 13px; font-weight: 700; color: #fff; letter-spacing: .5px; }
+  .sidebar-logo .sub   { font-size: 10px; color: rgba(255,255,255,0.45); margin-top: 2px; letter-spacing: .3px; }
+  .sidebar-logo .badge {
+    display: inline-block; margin-top: 8px; padding: 2px 8px;
+    background: rgba(36,99,235,0.35); border: 1px solid rgba(36,99,235,0.5);
+    border-radius: 20px; font-size: 9px; color: #93C5FD; font-weight: 600; letter-spacing: .4px;
+  }
+  .nav-section { padding: 14px 0 4px; }
+  .nav-label   { font-size: 9px; font-weight: 600; color: rgba(255,255,255,0.3); padding: 0 18px 6px; letter-spacing: 1px; text-transform: uppercase; }
+  .nav-item {
+    display: flex; align-items: center; gap: 10px; padding: 9px 18px;
+    font-size: 12px; color: rgba(255,255,255,0.55); cursor: pointer;
+    border-left: 3px solid transparent; transition: all .15s;
+  }
+  .nav-item.active { color: #fff; background: rgba(36,99,235,0.2); border-left-color: var(--accent); }
+  .nav-item:hover:not(.active) { color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.05); }
+  .nav-icon { width: 16px; height: 16px; opacity: .7; flex-shrink: 0; }
+  .nav-item.active .nav-icon { opacity: 1; }
+  .sidebar-footer {
+    margin-top: auto; padding: 14px 18px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    font-size: 10px; color: rgba(255,255,255,0.3);
+  }
+  .sidebar-footer strong { display: block; color: rgba(255,255,255,0.6); margin-bottom: 2px; }
+
+  /* ── MAIN ── */
+  .main { margin-left: var(--side-w); min-height: 100vh; display: flex; flex-direction: column; }
+
+  /* ── TOP BAR ── */
+  .topbar {
+    height: var(--header-h); background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 24px; position: sticky; top: 0; z-index: 50;
+  }
+  .topbar-left { display: flex; align-items: center; gap: 12px; }
+  .page-title  { font-size: 15px; font-weight: 600; }
+  .page-sub    { font-size: 11px; color: var(--muted); }
+  .topbar-right { display: flex; align-items: center; gap: 12px; }
+  .filter-chip {
+    display: flex; align-items: center; gap: 6px;
+    padding: 5px 12px; border: 1px solid var(--border); border-radius: 20px;
+    font-size: 11px; color: var(--muted); cursor: pointer; background: var(--bg);
+    transition: all .15s;
+  }
+  .filter-chip:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-chip svg { width: 12px; height: 12px; }
+  .refresh-btn {
+    padding: 6px 14px; background: var(--accent); color: #fff;
+    border: none; border-radius: 6px; font-size: 11px; font-weight: 600;
+    cursor: pointer; font-family: inherit; letter-spacing: .3px;
+  }
+
+  /* ── CONTENT ── */
+  .content { padding: 20px 24px 32px; flex: 1; }
+
+  /* ── KPI ROW ── */
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 18px; }
+  .kpi-card {
+    background: var(--surface); border-radius: 10px; padding: 16px 18px;
+    border: 1px solid var(--border); position: relative; overflow: hidden;
+    transition: box-shadow .2s;
+  }
+  .kpi-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+  .kpi-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--c, var(--accent));
+  }
+  .kpi-label { font-size: 10px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .6px; margin-bottom: 8px; }
+  .kpi-value { font-size: 26px; font-weight: 700; color: var(--text); line-height: 1; margin-bottom: 6px; font-family: 'DM Mono', monospace; }
+  .kpi-delta {
+    display: inline-flex; align-items: center; gap: 3px;
+    font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 10px;
+  }
+  .kpi-delta.up   { background: #D1FAE5; color: #065F46; }
+  .kpi-delta.down { background: #FEE2E2; color: #991B1B; }
+  .kpi-delta.neu  { background: #F3F4F6; color: #374151; }
+  .kpi-icon {
+    position: absolute; right: 14px; top: 14px; width: 32px; height: 32px;
+    border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    background: color-mix(in srgb, var(--c, var(--accent)) 12%, transparent);
+  }
+  .kpi-icon svg { width: 16px; height: 16px; color: var(--c, var(--accent)); }
+
+  /* ── CHART GRID ── */
+  .chart-grid { display: grid; gap: 14px; }
+  .row-2   { grid-template-columns: 1fr 1fr; }
+  .row-3   { grid-template-columns: 2fr 1fr 1fr; }
+  .row-2-1 { grid-template-columns: 3fr 2fr; }
+  .mb      { margin-bottom: 0; }
+
+  .chart-card {
+    background: var(--surface); border-radius: 10px; border: 1px solid var(--border);
+    padding: 18px 20px; transition: box-shadow .2s;
+  }
+  .chart-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.07); }
+  .chart-card.span2 { grid-column: span 2; }
+  .card-head { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; }
+  .card-title { font-size: 12px; font-weight: 700; color: var(--text); }
+  .card-sub   { font-size: 10px; color: var(--muted); margin-top: 2px; }
+  .card-badge {
+    padding: 3px 9px; border-radius: 20px; font-size: 9px; font-weight: 700;
+    letter-spacing: .4px; text-transform: uppercase;
+  }
+  .badge-blue   { background: #DBEAFE; color: #1D4ED8; }
+  .badge-green  { background: #D1FAE5; color: #065F46; }
+  .badge-amber  { background: #FEF3C7; color: #92400E; }
+  .badge-red    { background: #FEE2E2; color: #991B1B; }
+  .chart-wrap   { position: relative; }
+  .chart-wrap canvas { max-height: 220px; }
+  .chart-wrap.tall canvas { max-height: 280px; }
+  .chart-wrap.sm   canvas { max-height: 160px; }
+
+  /* ── FUNNEL ── */
+  .funnel-wrap { display: flex; flex-direction: column; gap: 6px; padding: 4px 0; }
+  .funnel-row  { display: flex; align-items: center; gap: 10px; }
+  .funnel-label{ font-size: 10px; font-weight: 600; color: var(--muted); width: 110px; flex-shrink: 0; text-align: right; }
+  .funnel-bar-bg { flex: 1; height: 22px; background: var(--bg); border-radius: 4px; overflow: hidden; position: relative; }
+  .funnel-bar-fill { height: 100%; border-radius: 4px; display: flex; align-items: center; padding-left: 8px; }
+  .funnel-val  { font-size: 10px; font-weight: 700; color: #fff; font-family: 'DM Mono', monospace; }
+  .funnel-pct  { font-size: 10px; color: var(--muted); width: 42px; text-align: right; font-family: 'DM Mono', monospace; }
+
+  /* ── TABLE ── */
+  .mini-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+  .mini-table th { font-size: 9px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; padding: 0 8px 8px; text-align: left; border-bottom: 1px solid var(--border); }
+  .mini-table td { padding: 7px 8px; border-bottom: 1px solid var(--border); color: var(--text); }
+  .mini-table tr:last-child td { border-bottom: none; }
+  .mini-table tr:hover td { background: #F9FAFB; }
+  .pill { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 9px; font-weight: 700; }
+  .pill-green { background: #D1FAE5; color: #065F46; }
+  .pill-amber { background: #FEF3C7; color: #92400E; }
+  .pill-red   { background: #FEE2E2; color: #991B1B; }
+  .pill-blue  { background: #DBEAFE; color: #1D4ED8; }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #D1D5DB; border-radius: 3px; }
+
+  /* ── ANIMATE IN ── */
+  @keyframes fadeUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+  .kpi-card    { animation: fadeUp .4s ease both; }
+  .kpi-card:nth-child(1) { animation-delay: .05s; }
+  .kpi-card:nth-child(2) { animation-delay: .10s; }
+  .kpi-card:nth-child(3) { animation-delay: .15s; }
+  .kpi-card:nth-child(4) { animation-delay: .20s; }
+  .chart-card  { animation: fadeUp .5s ease both; animation-delay: .25s; }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="brand">NAGAD LIMITED</div>
+    <div class="sub">HR Workforce Analytics</div>
+    <div class="badge">FY 2022-23</div>
+  </div>
+
+  <nav>
+    <div class="nav-section">
+      <div class="nav-label">Analytics</div>
+      <div class="nav-item active">
+        <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><rect x="3" y="3" width="7" height="7" rx="1" stroke-width="2"/><rect x="14" y="3" width="7" height="7" rx="1" stroke-width="2"/><rect x="3" y="14" width="7" height="7" rx="1" stroke-width="2"/><rect x="14" y="14" width="7" height="7" rx="1" stroke-width="2"/></svg>
+        Overview
+      </div>
+      <div class="nav-item">
+        <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0"/></svg>
+        Talent Acquisition
+      </div>
+      <div class="nav-item">
+        <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        Pipeline Metrics
+      </div>
+      <div class="nav-item">
+        <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        Time-to-Hire
+      </div>
+      <div class="nav-item">
+        <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+        Source Analysis
+      </div>
+    </div>
+    <div class="nav-section">
+      <div class="nav-label">Reports</div>
+      <div class="nav-item">
+        <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        Workforce Report
+      </div>
+      <div class="nav-item">
+        <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/></svg>
+        Diversity Analytics
+      </div>
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <strong>A H Ashik Ahmed</strong>
+    HR Analytics · PL-300 Certified
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div>
+        <div class="page-title">HR Workforce Overview</div>
+        <div class="page-sub">Nagad Limited · Full Year 2022-23 · 130 Active Requisitions</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="filter-chip">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        FY 2022-23
+      </div>
+      <div class="filter-chip">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
+        All Departments
+      </div>
+      <button class="refresh-btn">↻ Refresh</button>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- KPI ROW -->
+    <div class="kpi-row">
+      <div class="kpi-card" style="--c:#2463EB">
+        <div class="kpi-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0"/></svg></div>
+        <div class="kpi-label">Total Applicants</div>
+        <div class="kpi-value">10,269</div>
+        <span class="kpi-delta up">▲ 12.4% YoY</span>
+      </div>
+      <div class="kpi-card" style="--c:#10B981">
+        <div class="kpi-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+        <div class="kpi-label">Total Hires</div>
+        <div class="kpi-value">479</div>
+        <span class="kpi-delta up">▲ 8.1% YoY</span>
+      </div>
+      <div class="kpi-card" style="--c:#F59E0B">
+        <div class="kpi-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg></div>
+        <div class="kpi-label">Offer Acceptance Rate</div>
+        <div class="kpi-value">78.2%</div>
+        <span class="kpi-delta down">▼ 2.1%</span>
+      </div>
+      <div class="kpi-card" style="--c:#EF4444">
+        <div class="kpi-icon"><svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+        <div class="kpi-label">Avg. Time-to-Hire</div>
+        <div class="kpi-value">34d</div>
+        <span class="kpi-delta neu">― vs 35d prior</span>
+      </div>
+    </div>
+
+    <!-- ROW 1: Applications over time + Funnel -->
+    <div class="chart-grid row-2-1 mb" style="margin-bottom:14px">
+      <div class="chart-card">
+        <div class="card-head">
+          <div>
+            <div class="card-title">Application Volume by Month</div>
+            <div class="card-sub">Applications vs Hires trend · FY 2022-23</div>
+          </div>
+          <span class="card-badge badge-blue">TREND</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="trendChart"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="card-head">
+          <div>
+            <div class="card-title">Hiring Funnel</div>
+            <div class="card-sub">Stage-by-stage conversion</div>
+          </div>
+          <span class="card-badge badge-amber">FUNNEL</span>
+        </div>
+        <div class="funnel-wrap" style="margin-top:8px">
+          <div class="funnel-row">
+            <div class="funnel-label">Applied</div>
+            <div class="funnel-bar-bg">
+              <div class="funnel-bar-fill" style="width:100%;background:#2463EB">
+                <span class="funnel-val">10,269</span>
+              </div>
+            </div>
+            <div class="funnel-pct">100%</div>
+          </div>
+          <div class="funnel-row">
+            <div class="funnel-label">Screened</div>
+            <div class="funnel-bar-bg">
+              <div class="funnel-bar-fill" style="width:61%;background:#3B82F6">
+                <span class="funnel-val">6,264</span>
+              </div>
+            </div>
+            <div class="funnel-pct">61.0%</div>
+          </div>
+          <div class="funnel-row">
+            <div class="funnel-label">Shortlisted</div>
+            <div class="funnel-bar-bg">
+              <div class="funnel-bar-fill" style="width:28%;background:#60A5FA">
+                <span class="funnel-val">2,875</span>
+              </div>
+            </div>
+            <div class="funnel-pct">28.0%</div>
+          </div>
+          <div class="funnel-row">
+            <div class="funnel-label">Interviewed</div>
+            <div class="funnel-bar-bg">
+              <div class="funnel-bar-fill" style="width:14%;background:#93C5FD">
+                <span class="funnel-val">1,438</span>
+              </div>
+            </div>
+            <div class="funnel-pct">14.0%</div>
+          </div>
+          <div class="funnel-row">
+            <div class="funnel-label">Offered</div>
+            <div class="funnel-bar-bg">
+              <div class="funnel-bar-fill" style="width:6%;background:#BFDBFE">
+                <span class="funnel-val" style="color:#1D4ED8">613</span>
+              </div>
+            </div>
+            <div class="funnel-pct">6.0%</div>
+          </div>
+          <div class="funnel-row">
+            <div class="funnel-label">Hired</div>
+            <div class="funnel-bar-bg">
+              <div class="funnel-bar-fill" style="width:4.7%;background:#10B981">
+                <span class="funnel-val">479</span>
+              </div>
+            </div>
+            <div class="funnel-pct">4.7%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROW 2: Source | Dept | Time-to-hire -->
+    <div class="chart-grid row-3 mb" style="margin-bottom:14px">
+      <div class="chart-card">
+        <div class="card-head">
+          <div>
+            <div class="card-title">Source Channel Effectiveness</div>
+            <div class="card-sub">Hires by sourcing channel</div>
+          </div>
+          <span class="card-badge badge-green">SOURCE</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="sourceChart"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="card-head">
+          <div>
+            <div class="card-title">Hires by Department</div>
+            <div class="card-sub">Distribution across functions</div>
+          </div>
+          <span class="card-badge badge-blue">DEPT</span>
+        </div>
+        <div class="chart-wrap sm">
+          <canvas id="deptChart"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="card-head">
+          <div>
+            <div class="card-title">Time-to-Hire</div>
+            <div class="card-sub">Avg days by dept</div>
+          </div>
+          <span class="card-badge badge-red">TTH</span>
+        </div>
+        <div class="chart-wrap sm">
+          <canvas id="tthChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROW 3: Rejection reasons + Role level table -->
+    <div class="chart-grid row-2">
+      <div class="chart-card">
+        <div class="card-head">
+          <div>
+            <div class="card-title">Rejection Reason Breakdown</div>
+            <div class="card-sub">Top disqualification patterns · all stages</div>
+          </div>
+          <span class="card-badge badge-red">REJECTION</span>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="rejChart"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="card-head">
+          <div>
+            <div class="card-title">Role Level Performance</div>
+            <div class="card-sub">Applicants · Hires · Conversion · Avg TTH</div>
+          </div>
+          <span class="card-badge badge-blue">LEVELS</span>
+        </div>
+        <table class="mini-table">
+          <thead>
+            <tr>
+              <th>Level</th>
+              <th>Applicants</th>
+              <th>Hires</th>
+              <th>Conv. Rate</th>
+              <th>Avg TTH</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Entry Level</td><td>4,210</td><td>218</td><td>5.2%</td><td>22d</td><td><span class="pill pill-green">On Track</span></td></tr>
+            <tr><td>Mid Level</td><td>3,485</td><td>156</td><td>4.5%</td><td>34d</td><td><span class="pill pill-green">On Track</span></td></tr>
+            <tr><td>Senior</td><td>1,820</td><td>72</td><td>4.0%</td><td>48d</td><td><span class="pill pill-amber">Slow</span></td></tr>
+            <tr><td>Manager</td><td>560</td><td>24</td><td>4.3%</td><td>58d</td><td><span class="pill pill-amber">Slow</span></td></tr>
+            <tr><td>Director+</td><td>194</td><td>9</td><td>4.6%</td><td>72d</td><td><span class="pill pill-red">Critical</span></td></tr>
+          </tbody>
+        </table>
+        <div style="margin-top:12px">
+          <div style="font-size:10px;font-weight:700;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">Overall Hire Rate</div>
+          <div style="height:8px;background:var(--bg);border-radius:4px;overflow:hidden">
+            <div style="width:4.7%;height:100%;background:linear-gradient(90deg,#2463EB,#10B981);border-radius:4px"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:4px;font-size:9px;color:var(--muted)">
+            <span>0%</span><span style="font-weight:700;color:var(--accent)">4.7% Conversion</span><span>100%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<script>
+const BLUE  = '#2463EB';
+const GREEN = '#10B981';
+const AMBER = '#F59E0B';
+const RED   = '#EF4444';
+const MUTED = '#9CA3AF';
+
+const defaults = {
+  font: { family: "'DM Sans', sans-serif" },
+  plugins: {
+    legend: { labels: { font: { family: "'DM Sans'", size: 11 }, color: '#374151', boxWidth: 10, padding: 12 } },
+    tooltip: {
+      backgroundColor: '#1F2937', titleFont: { family: "'DM Sans'", size: 12, weight: '600' },
+      bodyFont: { family: "'DM Sans'", size: 11 }, padding: 10, cornerRadius: 6
+    }
+  },
+  scales: {
+    x: { grid: { color: '#F3F4F6' }, ticks: { font: { family: "'DM Sans'", size: 10 }, color: '#6B7280' } },
+    y: { grid: { color: '#F3F4F6' }, ticks: { font: { family: "'DM Sans'", size: 10 }, color: '#6B7280' } }
+  }
+};
+
+// 1. TREND: Applications vs Hires
+new Chart(document.getElementById('trendChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'],
+    datasets: [
+      {
+        label: 'Applications',
+        data: [720,850,920,1010,880,790,920,850,760,650,580,339],
+        backgroundColor: 'rgba(36,99,235,0.15)',
+        borderColor: BLUE, borderWidth: 2, borderRadius: 3, yAxisID: 'y',
+      },
+      {
+        label: 'Hires',
+        type: 'line',
+        data: [32,38,45,52,41,36,44,40,35,30,56,30],
+        borderColor: GREEN, backgroundColor: 'rgba(16,185,129,0.1)',
+        borderWidth: 2.5, pointRadius: 4, pointBackgroundColor: GREEN,
+        fill: true, tension: 0.4, yAxisID: 'y1',
+      }
+    ]
+  },
+  options: {
+    ...defaults,
+    responsive: true, maintainAspectRatio: true,
+    interaction: { mode: 'index', intersect: false },
+    plugins: { ...defaults.plugins },
+    scales: {
+      x: defaults.scales.x,
+      y:  { ...defaults.scales.y, position: 'left',  title: { display: true, text: 'Applications', font: { size: 9 }, color: MUTED } },
+      y1: { ...defaults.scales.y, position: 'right', grid: { drawOnChartArea: false },
+            title: { display: true, text: 'Hires', font: { size: 9 }, color: MUTED } }
+    }
+  }
+});
+
+// 2. SOURCE
+new Chart(document.getElementById('sourceChart'), {
+  type: 'bar',
+  data: {
+    labels: ['LinkedIn','Job Board','Referral','Career Site','University','Agency','Other'],
+    datasets: [{
+      label: 'Hires',
+      data: [142, 98, 87, 64, 38, 28, 22],
+      backgroundColor: [BLUE,'#3B82F6','#60A5FA',GREEN,'#34D399',AMBER,'#9CA3AF'],
+      borderRadius: 4
+    }]
+  },
+  options: {
+    ...defaults, responsive: true, maintainAspectRatio: true,
+    plugins: { ...defaults.plugins, legend: { display: false } },
+    scales: {
+      x: { ...defaults.scales.x, ticks: { font: { size: 9 }, color: '#6B7280' } },
+      y: defaults.scales.y
+    }
+  }
+});
+
+// 3. DEPT DOUGHNUT
+new Chart(document.getElementById('deptChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Technology','Operations','Finance','Sales','HR','Marketing','Legal'],
+    datasets: [{
+      data: [128, 97, 74, 68, 45, 38, 29],
+      backgroundColor: [BLUE,'#3B82F6','#60A5FA',GREEN,AMBER,RED,'#8B5CF6'],
+      borderWidth: 2, borderColor: '#fff',
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: {
+      legend: { position: 'bottom', labels: { font: { family: "'DM Sans'", size: 9 }, padding: 8, boxWidth: 8 } },
+      tooltip: defaults.plugins.tooltip
+    },
+    cutout: '62%'
+  }
+});
+
+// 4. TTH BAR HORIZONTAL
+new Chart(document.getElementById('tthChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Technology','Legal','Finance','Sales','Operations','HR','Marketing'],
+    datasets: [{
+      label: 'Avg Days',
+      data: [48, 44, 38, 35, 30, 27, 24],
+      backgroundColor: [RED, RED, AMBER, AMBER, GREEN, GREEN, GREEN],
+      borderRadius: 4
+    }]
+  },
+  options: {
+    indexAxis: 'y', responsive: true, maintainAspectRatio: true,
+    plugins: { ...defaults.plugins, legend: { display: false } },
+    scales: {
+      x: { ...defaults.scales.x, title: { display: true, text: 'Days', font: { size: 9 }, color: MUTED } },
+      y: { ...defaults.scales.y, ticks: { font: { size: 9 } } }
+    }
+  }
+});
+
+// 5. REJECTION DOUGHNUT
+new Chart(document.getElementById('rejChart'), {
+  type: 'bar',
+  data: {
+    labels: [
+      'Skills Mismatch','Overqualified','Salary Gap','No Response',
+      'Cultural Fit','Withdrew','Background Check','Location'
+    ],
+    datasets: [{
+      label: 'Rejections',
+      data: [3120, 1840, 1560, 1200, 920, 740, 380, 270],
+      backgroundColor: [RED,AMBER,BLUE,'#6B7280',RED,AMBER,GREEN,'#8B5CF6'],
+      borderRadius: 3
+    }]
+  },
+  options: {
+    ...defaults, responsive: true, maintainAspectRatio: true,
+    plugins: { ...defaults.plugins, legend: { display: false } },
+    scales: {
+      x: { ...defaults.scales.x, ticks: { font: { size: 9 }, maxRotation: 30 } },
+      y: defaults.scales.y
+    }
+  }
+});
+</script>
+</body>
+</html>
